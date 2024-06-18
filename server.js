@@ -1,7 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
-const { sequelize } = require('./models');
-const transactionRoutes = require('./routes/transactionRoutes');
+const { sequelize } = require('./src/models');
+const transactionRoutes = require('./src/routes/transactionRoutes');
 
 dotenv.config();
 

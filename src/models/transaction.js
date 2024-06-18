@@ -1,6 +1,5 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('./index');
-
 const Transaction = sequelize.define('Transaction', {
   id: {
     type: DataTypes.UUID,

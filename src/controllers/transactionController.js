@@ -1,9 +1,7 @@
-const Transaction = require('../models/transaction');
-const { v4: uuidv4 } = require('uuid');
-
+const { createTransaction, getTransactions, getTransactionById, updateTransaction, deleteTransaction } = require('../services/transactionService');
 exports.createTransaction = async (req, res) => {
   try {
-    const transaction = await Transaction.create(req.body);
+    const transaction = await createTransaction(req.body);
     res.status(201).json(transaction);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -12,7 +10,7 @@ exports.createTransaction = async (req, res) => {
 
 exports.getTransactions = async (req, res) => {
   try {
-    const transactions = await Transaction.findAll();
+    const transactions = await getTransactions();
     res.status(200).json(transactions);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -21,7 +19,7 @@ exports.getTransactions = async (req, res) => {
 
 exports.getTransactionById = async (req, res) => {
   try {
-    const transaction = await Transaction.findByPk(req.params.id);
+    const transaction = await getTransactionById(req.params.id);
     if (transaction) {
       res.status(200).json(transaction);
     } else {
@@ -34,11 +32,8 @@ exports.getTransactionById = async (req, res) => {
 
 exports.updateTransaction = async (req, res) => {
   try {
-    const [updated] = await Transaction.update(req.body, {
-      where: { id: req.params.id },
-    });
-    if (updated) {
-      const updatedTransaction = await Transaction.findByPk(req.params.id);
+    const updatedTransaction = await updateTransaction(req.params.id, req.body);
+    if (updatedTransaction) {
       res.status(200).json(updatedTransaction);
     } else {
       res.status(404).json({ error: 'Transaction not found' });
@@ -50,9 +45,7 @@ exports.updateTransaction = async (req, res) => {
 
 exports.deleteTransaction = async (req, res) => {
   try {
-    const deleted = await Transaction.destroy({
-      where: { id: req.params.id },
-    });
+    const deleted = await deleteTransaction(req.params.id);
     if (deleted) {
       res.status(204).json();
     } else {
